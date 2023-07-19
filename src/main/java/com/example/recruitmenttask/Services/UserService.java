@@ -1,16 +1,13 @@
 package com.example.recruitmenttask.Services;
 
-import java.io.StringReader;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.recruitmenttask.Models.User;
-import com.example.recruitmenttask.Models.UserList;
 import com.example.recruitmenttask.Repositories.UserRepository;
+import com.example.recruitmenttask.Utils.XMLDataHandler;
 
 @Service
 public class UserService
@@ -24,15 +21,8 @@ public class UserService
 	{
 		try
 		{
-			JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			
-			// Pass XMLData to stream
-			StringReader reader = new StringReader(XMLData);
-			// Convert XML to java object from stream
-			UserList userList = (UserList)unmarshaller.unmarshal(reader);
-			
-			userRepository.saveAll(userList.getUsers());
+			List<User> users = XMLDataHandler.convertXMLToList(XMLData);
+			userRepository.saveAll(users);
 			
 			return ResponseEntity.ok("Success");
 		}
