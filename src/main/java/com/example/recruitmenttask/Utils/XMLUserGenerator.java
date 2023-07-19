@@ -8,7 +8,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import com.example.recruitmenttask.Models.UserRequest;
+import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Models.UserList;
 
 public class XMLUserGenerator
@@ -19,7 +19,7 @@ public class XMLUserGenerator
 		
 		try
 		{
-			JAXBContext context = JAXBContext.newInstance(UserList.class, UserRequest.class);
+			JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
 			Marshaller marshaller = context.createMarshaller();
 			
 			// Format output
@@ -35,12 +35,12 @@ public class XMLUserGenerator
 		}
 	}
 	
-	private static List<UserRequest> generateUsersToList(int amount)
+	private static List<User> generateUsersToList(int amount)
 	{
-		List<UserRequest> users = new ArrayList<>();
+		List<User> users = new ArrayList<>();
 		
 		for(int i = 1; i <= amount; i++)
-			users.add(new UserRequest("name" + i, "surname" + i, "login" + i));
+			users.add(new User("name" + i, "surname" + i, "login" + i));
 		
 		return users;
 	}

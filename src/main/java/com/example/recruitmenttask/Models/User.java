@@ -19,13 +19,6 @@ public class User
 		this.login = login;
 	}
 	
-	public User(UserRequest user)
-	{
-		name = user.getName();
-		surname = user.getSurname();
-		login = user.getLogin();
-	}
-	
 	// Getters, setters
 	public String getName() { return name; }
 	public String getSurname() { return surname; }

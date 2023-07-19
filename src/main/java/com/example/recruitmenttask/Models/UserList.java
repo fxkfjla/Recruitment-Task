@@ -10,15 +10,15 @@ public class UserList
 {
 	public UserList() {}
 	
-	public UserList(List<UserRequest> users)
+	public UserList(List<User> users)
 	{
 		this.userList = users;
 	}
 	
 	// Getters, setters
-	public List<UserRequest> getUsers() { return userList; }
-	public void setUsers(List<UserRequest> users) { this.userList = users; }
+	public List<User> getUsers() { return userList; }
+	public void setUsers(List<User> users) { this.userList = users; }
 	
 	@XmlElement(name = "user")
-	private List<UserRequest> userList;
+	private List<User> userList;
 }
