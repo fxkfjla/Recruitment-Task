@@ -16,9 +16,9 @@ public class UserList
 	}
 	
 	// Getters, setters
+	@XmlElement(name = "user")
 	public List<User> getUsers() { return userList; }
 	public void setUsers(List<User> users) { this.userList = users; }
 	
-	@XmlElement(name = "user")
 	private List<User> userList;
 }
