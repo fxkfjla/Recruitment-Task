@@ -20,6 +20,12 @@ public class GlobalExceptionHandler
 {
 	// TODO: Render views
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleException(Exception e)
+	{
+		return new ResponseEntity<>(generateBody(e), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	public ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e)
 	{
