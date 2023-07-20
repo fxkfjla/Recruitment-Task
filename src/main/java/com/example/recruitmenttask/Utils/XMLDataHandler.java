@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
@@ -14,7 +15,7 @@ import com.example.recruitmenttask.Models.UserList;
 
 public class XMLDataHandler
 {
-	public static List<User> convertXMLToList(String XMLData) throws Exception
+	public static List<User> convertXMLToList(String XMLData) throws JAXBException
 	{
 		JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
 		Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -41,11 +42,10 @@ public class XMLDataHandler
 	        // Convert to XML with output to users.xml
 			marshaller.marshal(userList, new File("users.xml"));
 		}
-		catch(Exception e)
+		catch(JAXBException e)
 		{
-			System.out.println("Failed to generate users to xml file.");
+			System.out.println("Failed generating xml users. Reason:");
 			e.printStackTrace();
-			// TODO: Handle JABX, marshal, illegalArgument exceptions outside this function
 		}
 	}
 	

@@ -1,5 +1,7 @@
 package com.example.recruitmenttask.Controllers;
 
+import javax.xml.bind.JAXBException;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +21,7 @@ public class UserController
 	}
 	
 	@PostMapping(value = "/load-xml", consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE})
-	public ResponseEntity<String> loadXMLData(@RequestBody String XMLData)
+	public ResponseEntity<String> loadXMLData(@RequestBody String XMLData) throws JAXBException
 	{
 		return userService.loadXMLData(XMLData);
 	}

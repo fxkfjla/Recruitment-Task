@@ -2,6 +2,8 @@ package com.example.recruitmenttask.Services;
 
 import java.util.List;
 
+import javax.xml.bind.JAXBException;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +19,12 @@ public class UserService
 		this.userRepository = userRepository;
 	}
 	
-	public ResponseEntity<String> loadXMLData(String XMLData)
+	public ResponseEntity<String> loadXMLData(String XMLData) throws JAXBException
 	{
-		try
-		{
 			List<User> users = XMLDataHandler.convertXMLToList(XMLData);
 			userRepository.saveAll(users);
 			
 			return ResponseEntity.ok("Success");
-		}
-		catch(Exception e)
-		{
-			System.out.println("Failed to load users from xml.");
-			e.printStackTrace();
-			// Handle JAXB, marshal, illegalArgument exceptions
-			// TODO: throw bad file format exception
-			return ResponseEntity.ok("Failure");
-		}
 	}
 	
 	private final UserRepository userRepository;
