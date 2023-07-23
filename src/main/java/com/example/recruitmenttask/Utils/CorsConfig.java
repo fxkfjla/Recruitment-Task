@@ -18,6 +18,7 @@ public class CorsConfig
         config.addAllowedOrigin("*"); // Allow requests from any origin, you can restrict it to specific origins
         config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
+        config.addExposedHeader("X-Total-Count"); // Expose X-Total-Count header
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
