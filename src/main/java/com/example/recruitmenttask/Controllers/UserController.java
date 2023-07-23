@@ -1,16 +1,20 @@
 package com.example.recruitmenttask.Controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Services.UserService;
 
 @RestController
@@ -28,5 +32,15 @@ public class UserController
 		return userService.uploadXMLFile(file);
 	}
 
+	@GetMapping
+	public ResponseEntity<List<User>> findAll
+	(
+		@RequestParam(defaultValue = "0") int page, 
+		@RequestParam(defaultValue = "8") int size
+	)
+	{
+		return userService.getUsersPage(PageRequest.of(page, size));
+	}
+	
 	private final UserService userService;
 }
