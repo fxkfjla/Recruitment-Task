@@ -1,5 +1,6 @@
 package com.example.recruitmenttask.Utils;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class GlobalExceptionHandler
 {
 	// TODO: Render views
 	
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler(value = {Exception.class, IOException.class, JAXBException.class})
 	public ResponseEntity<Object> handleException(Exception e)
 	{
 		return new ResponseEntity<>(generateBody(e), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -36,13 +37,6 @@ public class GlobalExceptionHandler
 	public ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e)
 	{
 		return new ResponseEntity<>(generateBody(e), HttpStatus.METHOD_NOT_ALLOWED);
-	}
-	
-	@ExceptionHandler(JAXBException.class)
-	public ResponseEntity<Object> handleJAXBException(JAXBException e)
-	{
-		// Internal server error?
-		return new ResponseEntity<>(generateBody(e), HttpStatus.BAD_REQUEST);
 	}
 	
 	private Map<String, String> generateBody(Exception e)
