@@ -23,9 +23,9 @@ public class UserController
 	}
 	
 	@PostMapping("/load-xml")
-	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) throws JAXBException, IOException
+	public ResponseEntity<String> uploadXMLFile(@RequestParam("file") MultipartFile file) throws JAXBException, IOException
 	{
-		return userService.loadXMLData(file);
+		return userService.uploadXMLFile(file);
 	}
 
 	private final UserService userService;

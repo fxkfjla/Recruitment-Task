@@ -21,7 +21,7 @@ public class UserService
 		this.userRepository = userRepository;
 	}
 	
-	public ResponseEntity<String> loadXMLData(MultipartFile file) throws JAXBException, IOException
+	public ResponseEntity<String> uploadXMLFile(MultipartFile file) throws JAXBException, IOException
 	{
 			List<User> users = XMLDataHandler.convertXMLToList(file);
 			userRepository.saveAll(users);
