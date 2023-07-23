@@ -1,7 +1,8 @@
 package com.example.recruitmenttask.Utils;
 
 import java.io.File;
-import java.io.StringReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,20 +11,21 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Models.UserList;
 
 public class XMLDataHandler
 {
-	public static List<User> convertXMLToList(String XMLData) throws JAXBException
+	public static List<User> convertXMLToList(MultipartFile file) throws JAXBException, IOException
 	{
 		JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
 		Unmarshaller unmarshaller = context.createUnmarshaller();
 		
-		// Pass XMLData to stream
-		StringReader reader = new StringReader(XMLData);
-		// Convert XML to java object from stream
-		UserList userList = (UserList)unmarshaller.unmarshal(reader);
+		InputStream inputStream = file.getInputStream();
+		UserList userList = (UserList)unmarshaller.unmarshal(inputStream);
+		inputStream.close();
 		
 		return userList.getUsers();
 	}
