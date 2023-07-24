@@ -34,7 +34,7 @@ public class UserController
 	}
 
 	@GetMapping
-	public ResponseEntity<List<User>> findAllwithPaginationAndSorting
+	public ResponseEntity<List<User>> findAll
 	(
 		@RequestParam(defaultValue = "0") int page, 
 		@RequestParam(defaultValue = "13") int size,
@@ -44,7 +44,22 @@ public class UserController
 	{
 	    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
 		//TODO: handle page index out of bound
-		return userService.getUsersPage(PageRequest.of(page, size, Sort.by(sortDirection, field)));
+		return userService.findAll(PageRequest.of(page, size, Sort.by(sortDirection, field)));
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin
+	(
+		@RequestParam String searchField,
+		@RequestParam(defaultValue = "0") int page, 
+		@RequestParam(defaultValue = "13") int size,
+		@RequestParam(defaultValue = "ASC") String direction,
+		@RequestParam(defaultValue = "id") String field
+	)
+	{
+		Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+		//TODO: handle page index out of bound
+		return userService.findByNameOrSurnameOrLogin(searchField, PageRequest.of(page, size, Sort.by(sortDirection, field)));
 	}
 	
 	private final UserService userService;

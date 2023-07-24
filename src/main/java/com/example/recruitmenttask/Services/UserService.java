@@ -32,15 +32,32 @@ public class UserService
 			return ResponseEntity.ok("Success");
 	}
 	
-	public ResponseEntity<List<User>> getUsersPage(Pageable pageable)
+	public ResponseEntity<List<User>> findAll(Pageable pageable)
 	{
 		Page<User> usersPage = userRepository.findAll(pageable);
 	    List<User> users = usersPage.getContent();
 	    
-		HttpHeaders responseHeaders = new HttpHeaders();
-	    responseHeaders.add("X-Total-Count", String.valueOf(usersPage.getTotalElements()));
+		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
 	 	    
 		return ResponseEntity.ok().headers(responseHeaders).body(users);
+	}
+	
+	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin(String searchField, Pageable pageable)
+	{
+		Page<User> usersPage = userRepository.findByNameOrSurnameOrLogin(searchField, searchField, searchField, pageable);
+	    List<User> users = usersPage.getContent();
+	    
+		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
+		
+		return ResponseEntity.ok().headers(responseHeaders).body(users);
+	}
+	
+	private HttpHeaders getXTotalCountHeader(long totalElements)
+	{
+		HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.add("X-Total-Count", String.valueOf(totalElements));
+	    
+	    return responseHeaders;
 	}
 	
 	private final UserRepository userRepository;
