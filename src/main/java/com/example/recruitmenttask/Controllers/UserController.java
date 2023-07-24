@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +34,17 @@ public class UserController
 	}
 
 	@GetMapping
-	public ResponseEntity<List<User>> findAll
+	public ResponseEntity<List<User>> findAllwithPaginationAndSorting
 	(
 		@RequestParam(defaultValue = "0") int page, 
-		@RequestParam(defaultValue = "8") int size
+		@RequestParam(defaultValue = "13") int size,
+		@RequestParam(defaultValue = "ASC") String direction,
+		@RequestParam(defaultValue = "id") String field
 	)
 	{
-		return userService.getUsersPage(PageRequest.of(page, size));
+	    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
+		//TODO: handle page index out of bound
+		return userService.getUsersPage(PageRequest.of(page, size, Sort.by(sortDirection, field)));
 	}
 	
 	private final UserService userService;
