@@ -27,6 +27,9 @@ public class UserService
 	public ResponseEntity<String> uploadXMLFile(MultipartFile file) throws JAXBException, IOException
 	{
 			List<User> users = XMLDataHandler.convertXMLToList(file);
+			
+			// Clear data in table
+			userRepository.truncateTable();
 			userRepository.saveAll(users);
 			
 			return ResponseEntity.ok("Success");
@@ -44,7 +47,8 @@ public class UserService
 	
 	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin(String searchField, Pageable pageable)
 	{
-		Page<User> usersPage = userRepository.findByNameOrSurnameOrLogin(searchField, searchField, searchField, pageable);
+		Page<User> usersPage = userRepository.findByNameContainingOrSurnameContainingOrLoginContaining
+				(searchField, searchField, searchField, pageable);
 	    List<User> users = usersPage.getContent();
 	    
 		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
