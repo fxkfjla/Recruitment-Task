@@ -26,6 +26,8 @@ public class UserService
 	{
 		List<User> users = XMLDataHandler.convertXMLToList(file);
 		
+		// Clear data in table
+		userRepository.truncateTable();
 		userRepository.saveAll(users);
 		
 		return ResponseEntity.ok("Success");
