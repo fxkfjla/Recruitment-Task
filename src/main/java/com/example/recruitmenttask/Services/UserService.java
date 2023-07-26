@@ -3,7 +3,7 @@ package com.example.recruitmenttask.Services;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
 import com.example.recruitmenttask.Models.User;
+import com.example.recruitmenttask.Models.DTO.PageRequestDTO;
 import com.example.recruitmenttask.Repositories.UserRepository;
+import com.example.recruitmenttask.Utils.PageRequestDTOToPageRequestConverter;
 import com.example.recruitmenttask.Utils.XMLDataHandler;
 
 @Service
 public class UserService
 {
-	public UserService(UserRepository userRepository)
+	public UserService(UserRepository userRepository, PageRequestDTOToPageRequestConverter converter)
 	{
 		this.userRepository = userRepository;
+		this.converter = converter;
 	}
 	
 	public ResponseEntity<String> uploadXMLFile(MultipartFile file) throws InvalidXMLDataException
@@ -33,25 +36,24 @@ public class UserService
 		return ResponseEntity.ok("Success");
 	}
 	
-	public ResponseEntity<List<User>> findAll(Pageable pageable)
+	public ResponseEntity<List<User>> findAll(PageRequestDTO pageRequest)
 	{
-		Page<User> usersPage = userRepository.findAll(pageable);
-	    List<User> users = usersPage.getContent();
-	    
+		PageRequest page = converter.convert(pageRequest);
+		Page<User> usersPage = userRepository.findAll(page);
+		
 		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
 	 	    
-		return ResponseEntity.ok().headers(responseHeaders).body(users);
+		return ResponseEntity.ok().headers(responseHeaders).body(usersPage.getContent());
 	}
 	
-	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin(String searchField, Pageable pageable)
+	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin(String search, PageRequestDTO pageRequest)
 	{
-		Page<User> usersPage = userRepository.findByNameContainingOrSurnameContainingOrLoginContaining
-				(searchField, searchField, searchField, pageable);
-	    List<User> users = usersPage.getContent();
-	    
-		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
+		PageRequest page = converter.convert(pageRequest);
+		Page<User> usersPage = userRepository.findByNameContainingOrSurnameContainingOrLoginContaining(search, search, search, page);
 		
-		return ResponseEntity.ok().headers(responseHeaders).body(users);
+		HttpHeaders responseHeaders = getXTotalCountHeader(usersPage.getTotalElements());
+	 	    
+		return ResponseEntity.ok().headers(responseHeaders).body(usersPage.getContent());
 	}
 	
 	private HttpHeaders getXTotalCountHeader(long totalElements)
@@ -63,4 +65,5 @@ public class UserService
 	}
 	
 	private final UserRepository userRepository;
+	private final PageRequestDTOToPageRequestConverter converter;
 }

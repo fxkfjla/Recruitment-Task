@@ -29,10 +29,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-		<!--For xml media support-->
-		<dependency>
-  			<groupId>com.fasterxml.jackson.dataformat</groupId>
-  			<artifactId>jackson-dataformat-xml</artifactId>
+		<dependency> 
+    		<groupId>org.springframework.boot</groupId> 
+    		<artifactId>spring-boot-starter-validation</artifactId> 
 		</dependency>
 
 		<dependency>

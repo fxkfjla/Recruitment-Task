@@ -2,18 +2,19 @@ package com.example.recruitmenttask.Controllers;
 
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
 import com.example.recruitmenttask.Models.User;
+import com.example.recruitmenttask.Models.DTO.PageRequestDTO;
 import com.example.recruitmenttask.Services.UserService;
 
 @RestController
@@ -26,38 +27,21 @@ public class UserController
 	}
 	
 	@PostMapping("/load-xml")
-	public ResponseEntity<String> uploadXMLFile(@RequestParam("file") MultipartFile file) throws InvalidXMLDataException
+	public ResponseEntity<String> uploadXMLFile(@RequestPart MultipartFile file) throws InvalidXMLDataException
 	{
 		return userService.uploadXMLFile(file);
 	}
-
+	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll
-	(
-		@RequestParam(defaultValue = "0") int page, 
-		@RequestParam(defaultValue = "13") int size,
-		@RequestParam(defaultValue = "ASC") String direction,
-		@RequestParam(defaultValue = "id") String field
-	)
+	public ResponseEntity<List<User>> findAll(@Valid PageRequestDTO page)
 	{
-	    Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-		//TODO: handle page index out of bound
-		return userService.findAll(PageRequest.of(page, size, Sort.by(sortDirection, field)));
+		return userService.findAll(page);
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin
-	(
-		@RequestParam String searchField,
-		@RequestParam(defaultValue = "0") int page, 
-		@RequestParam(defaultValue = "13") int size,
-		@RequestParam(defaultValue = "ASC") String direction,
-		@RequestParam(defaultValue = "id") String field
-	)
+	public ResponseEntity<List<User>> findByNameOrSurnameOrLogin(String search, @Valid PageRequestDTO page)
 	{
-		Sort.Direction sortDirection = Sort.Direction.fromString(direction);
-		//TODO: handle page index out of bound
-		return userService.findByNameOrSurnameOrLogin(searchField, PageRequest.of(page, size, Sort.by(sortDirection, field)));
+		return userService.findByNameOrSurnameOrLogin(search, page);
 	}
 	
 	private final UserService userService;

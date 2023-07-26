@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
 import com.example.recruitmenttask.Exceptions.JAXBInitializationRuntimeException;
 import com.example.recruitmenttask.Models.User;
-import com.example.recruitmenttask.Models.UserList;
+import com.example.recruitmenttask.Models.DTO.UserList;
 
 public class XMLDataHandler
 {

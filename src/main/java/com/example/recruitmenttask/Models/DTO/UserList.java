@@ -1,9 +1,11 @@
-package com.example.recruitmenttask.Models;
+package com.example.recruitmenttask.Models.DTO;
 
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.example.recruitmenttask.Models.User;
 
 @XmlRootElement(name = "users")
 public class UserList
