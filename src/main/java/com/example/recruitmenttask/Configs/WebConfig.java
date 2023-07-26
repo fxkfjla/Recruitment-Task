@@ -1,4 +1,4 @@
-package com.example.recruitmenttask.Config;
+package com.example.recruitmenttask.Configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
