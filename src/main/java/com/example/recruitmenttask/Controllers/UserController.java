@@ -1,9 +1,6 @@
 package com.example.recruitmenttask.Controllers;
 
-import java.io.IOException;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
 import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Services.UserService;
 
@@ -28,7 +26,7 @@ public class UserController
 	}
 	
 	@PostMapping("/load-xml")
-	public ResponseEntity<String> uploadXMLFile(@RequestParam("file") MultipartFile file) throws JAXBException, IOException
+	public ResponseEntity<String> uploadXMLFile(@RequestParam("file") MultipartFile file) throws InvalidXMLDataException
 	{
 		return userService.uploadXMLFile(file);
 	}

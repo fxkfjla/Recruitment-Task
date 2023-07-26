@@ -4,30 +4,41 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
+import com.example.recruitmenttask.Exceptions.JAXBInitializationRuntimeException;
 import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Models.UserList;
 
 public class XMLDataHandler
 {
-	public static List<User> convertXMLToList(MultipartFile file) throws JAXBException, IOException
+	public static List<User> convertXMLToList(MultipartFile file) throws InvalidXMLDataException
 	{
-		JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-		
-		InputStream inputStream = file.getInputStream();
-		UserList userList = (UserList)unmarshaller.unmarshal(inputStream);
-		inputStream.close();
-		
-		return userList.getUsers();
+		try
+		{
+			JAXBContext context = JAXBContext.newInstance(UserList.class, User.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			
+			return unmarshalFile(file, unmarshaller);
+		}
+		catch(UnmarshalException e)
+		{
+			throw new InvalidXMLDataException("Invalid data format!");
+		}
+		catch(JAXBException e)
+		{
+			throw new JAXBInitializationRuntimeException("Can't instantiate JAXBContext or Unmarshaller!");
+		}
 	}
 	
 	public static void generateUsersToXML(int amount)
@@ -46,8 +57,7 @@ public class XMLDataHandler
 		}
 		catch(JAXBException e)
 		{
-			System.out.println("Failed generating xml users. Reason:");
-			e.printStackTrace();
+			throw new JAXBInitializationRuntimeException("Can't instantiate JAXBContext or Marshaller!");
 		}
 	}
 	
@@ -59,5 +69,21 @@ public class XMLDataHandler
 			users.add(new User("name" + i, "surname" + i, "login" + i));
 		
 		return users;
+	}
+	
+	private static List<User> unmarshalFile(MultipartFile file, Unmarshaller unmarshaller) throws JAXBException
+	{
+		try(InputStream inputStream = file.getInputStream())
+		{
+			UserList userList = (UserList)unmarshaller.unmarshal(inputStream);
+			
+			return userList.getUsers();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+			
+			return Collections.emptyList();
+		}
 	}
 }
