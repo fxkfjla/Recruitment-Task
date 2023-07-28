@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,13 +29,20 @@ public class UserService
 	
 	public ResponseEntity<String> uploadXMLFile(MultipartFile file) throws InvalidXMLDataException
 	{
-		List<User> users = XMLDataHandler.convertXMLToList(file);
+		if(file.getContentType().equals(MediaType.APPLICATION_XML_VALUE))
+		{
+			List<User> users = XMLDataHandler.convertXMLToList(file);
 		
-		// Clear data in table
-		userRepository.truncateTable();
-		userRepository.saveAll(users);
+			// Clear data in table
+			userRepository.truncateTable();
+			userRepository.saveAll(users);
 		
-		return ResponseEntity.ok("Success");
+			return ResponseEntity.ok("File successfully uploaded!");
+		}
+		else
+		{
+			return new ResponseEntity<>("Upload only XML files!", HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+		}
 	}
 	
 	public ResponseEntity<List<User>> findAll(PageRequestDTO pageRequest)
