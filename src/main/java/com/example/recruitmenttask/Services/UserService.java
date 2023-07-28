@@ -29,7 +29,7 @@ public class UserService
 	
 	public ResponseEntity<String> uploadXMLFile(MultipartFile file) throws InvalidXMLDataException
 	{
-		if(file.getContentType().equals(MediaType.APPLICATION_XML_VALUE))
+		if(file.getContentType().equals(MediaType.TEXT_XML_VALUE))
 		{
 			List<User> users = XMLDataHandler.convertXMLToList(file);
 		

@@ -37,7 +37,7 @@ public class UserServiceTest
 		(
 			"file", 
 			"file.xml", 
-			MediaType.APPLICATION_XML_VALUE, 
+			MediaType.TEXT_XML_VALUE, 
 			contents.getBytes()
 		);
 
