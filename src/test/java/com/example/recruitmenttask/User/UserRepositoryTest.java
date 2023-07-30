@@ -1,7 +1,6 @@
 package com.example.recruitmenttask.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class UserRepositoryTest
 		String name = "Bjarne";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(name, null, null, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(name, null, null, null).getContent();
 		
 		// Then
 		assertThat(users).allMatch(user -> user.getName().equals(name));
@@ -66,7 +65,7 @@ public class UserRepositoryTest
 		String surname = "Gosling";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, surname, null, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, surname, null, null).getContent();
 		
 		// Then
 		assertThat(users).allMatch(user -> user.getSurname().equals(surname));		
@@ -79,7 +78,7 @@ public class UserRepositoryTest
 		String login = "idontdrive";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, null, login, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, null, login, null).getContent();
 		
 		// Then
 		assertThat(users).allMatch(user -> user.getLogin().equals(login));		
@@ -92,7 +91,7 @@ public class UserRepositoryTest
 		String name = "Mariusz";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(name, null, null, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(name, null, null, null).getContent();
 		
 		// Then
 		assertThat(users).isEmpty();
@@ -105,7 +104,7 @@ public class UserRepositoryTest
 		String surname = "Pudzianowski";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, surname, null, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, surname, null, null).getContent();
 		
 		// Then
 		assertThat(users).isEmpty();
@@ -118,7 +117,7 @@ public class UserRepositoryTest
 		String login = "pudzian";
 		
 		// When
-		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, null, login, any()).getContent();
+		List<User> users = sut.findByNameContainingOrSurnameContainingOrLoginContaining(null, null, login, null).getContent();
 		
 		// Then
 		assertThat(users).isEmpty();
