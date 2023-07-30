@@ -6,10 +6,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,10 +23,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.data.domain.Page;
 
 import com.example.recruitmenttask.Exceptions.InvalidXMLDataException;
+import com.example.recruitmenttask.Models.User;
 import com.example.recruitmenttask.Models.DTO.PageRequestDTO;
 import com.example.recruitmenttask.Repositories.UserRepository;
 import com.example.recruitmenttask.Services.UserService;
 import com.example.recruitmenttask.Utils.PageRequestDTOToPageRequestConverter;
+import com.example.recruitmenttask.Utils.XMLDataHandler;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest
@@ -42,6 +47,7 @@ public class UserServiceTest
 		);
 
         // When
+		xmlDataHandler.when(() -> XMLDataHandler.convertXMLToList(xmlFile)).thenReturn(new ArrayList<User>());
         ResponseEntity<String> response = sut.uploadXMLFile(xmlFile);
 
         // Then
@@ -112,6 +118,8 @@ public class UserServiceTest
 	private UserRepository userRepository;
 	@Mock
 	private PageRequestDTOToPageRequestConverter converter;
+	@Mock
+	private MockedStatic<XMLDataHandler> xmlDataHandler;
 	@InjectMocks
 	private UserService sut;
 }

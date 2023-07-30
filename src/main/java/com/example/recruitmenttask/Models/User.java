@@ -1,5 +1,7 @@
 package com.example.recruitmenttask.Models;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +31,25 @@ public class User
 	public void setSurname(String surname) { this.surname = surname; }
 	public void setLogin(String login) { this.login = login; }
 	
+	@Override
+    public boolean equals(Object o)
+	{
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        
+        User rhs = (User)o;
+        
+        return getName().equals(rhs.getName()) &&
+        		getSurname().equals(rhs.getSurname()) &&
+        		getLogin().equals(rhs.getLogin());
+    }
+		
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getName(), getSurname(), getLogin());
+    }
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

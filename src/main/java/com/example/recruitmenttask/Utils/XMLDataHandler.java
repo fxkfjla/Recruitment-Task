@@ -41,7 +41,7 @@ public class XMLDataHandler
 		}
 	}
 	
-	public static void generateUsersToXML(int amount)
+	public static void generateUsersToXML(int amount, String fileName, boolean formatOutput)
 	{
 		UserList userList = new UserList(generateUsersToList(amount));
 
@@ -51,9 +51,9 @@ public class XMLDataHandler
 			Marshaller marshaller = context.createMarshaller();
 			
 			// Format output
-	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formatOutput);
 	        // Convert to XML with output to users.xml
-			marshaller.marshal(userList, new File("users.xml"));
+			marshaller.marshal(userList, new File(fileName));
 		}
 		catch(JAXBException e)
 		{

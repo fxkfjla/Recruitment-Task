@@ -10,7 +10,7 @@ public class RecruitmenttaskApplication
 {
 	public static void main(String[] args)
 	{
-		XMLDataHandler.generateUsersToXML(50000);
+		XMLDataHandler.generateUsersToXML(50000, "users.xml", true);
 		
 		SpringApplication.run(RecruitmenttaskApplication.class, args);
 	}
